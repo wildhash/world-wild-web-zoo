@@ -1,0 +1,21 @@
+{
+  "name": "world-wild-web-zoo",
+  "version": "1.0.0",
+  "description": "An AI-powered zoo living on Cloudflare Workers — each creature reads the web, explains it, and sings its story",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "echo \"No tests yet - creatures are untamed!\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "wrangler": "^4.45.0"
+  },
+  "dependencies": {
+    "@cloudflare/ai": "^1.2.2",
+    "mcp-framework": "^0.2.15"
+  }
+}
