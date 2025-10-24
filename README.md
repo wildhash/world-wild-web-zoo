@@ -2,6 +2,10 @@
 
 An AI-powered zoo living on Cloudflare Workers — each creature reads the web, explains it, and sings its story!
 
+![World Wild Web Zoo](https://github.com/user-attachments/assets/95bb8309-900c-4514-9be1-08a7681a3165)
+
+> **Try it live!** Once deployed, just pick a creature, enter any URL, and watch the magic happen! 🪄
+
 ## 🎪 What is this?
 
 The World Wild Web Zoo is a magical place where AI creatures roam the internet! Each creature has its own unique personality and can visit any website you give them. They'll read the site, understand it, and tell you all about it in their own creative way:
@@ -121,6 +125,25 @@ MIT - Feel free to create your own zoo!
 
 Found a bug? Want to add a new creature? PRs welcome! This is a creative project meant to be fun and experimental.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on adding new creatures and features.
+
+## 📚 Documentation
+
+- **[SETUP.md](SETUP.md)** - Detailed setup instructions
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Production deployment checklist
+- **[EXAMPLES.md](EXAMPLES.md)** - Example creature outputs and use cases
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture and technical details
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+
+## 🔗 Quick Links
+
+- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
+- [Workers AI Documentation](https://developers.cloudflare.com/workers-ai/)
+- [Wrangler CLI Documentation](https://developers.cloudflare.com/workers/wrangler/)
+- [Report Issues](https://github.com/wildhash/world-wild-web-zoo/issues)
+
 ---
 
 Made with ✨ and a lot of imagination
+
+**Status**: ✅ Production Ready | 🔒 Security Verified | 🎨 Fully Documented
