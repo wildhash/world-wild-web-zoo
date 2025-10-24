@@ -20,9 +20,11 @@ The World Wild Web Zoo is a magical place where AI creatures roam the internet! 
 
 - **AI-Powered Analysis**: Creatures use Cloudflare Workers AI to understand and explain websites
 - **Creative Interpretations**: Each creature offers unique perspectives - technical, poetic, musical, or chaotic!
+- **Multiple Expression Modes**: Plain, Poem, Song, or Dialogue - let creatures tell their story in different ways
 - **Interactive Chat**: Talk to the creatures and ask them questions about the websites they've explored
 - **Persistent Memory**: Creature encounters are stored in Workers KV for 24 hours
 - **Beautiful UI**: A colorful, fun interface that makes exploring the web magical
+- **🔌 MCP Server**: Standards-compliant Model Context Protocol server for programmatic access
 
 ## 🚀 Getting Started
 
@@ -67,6 +69,11 @@ npm run dev
 
 Visit `http://localhost:8787` to see your zoo!
 
+Run tests:
+```bash
+npm test
+```
+
 ### Deployment
 
 Deploy to Cloudflare Workers:
@@ -78,23 +85,82 @@ Your zoo will be live at `https://world-wild-web-zoo.<your-subdomain>.workers.de
 
 ## 🎮 How to Use
 
+### Web Interface
+
 1. **Choose a Creature**: Pick one of the five unique creatures from the zoo
 2. **Enter a URL**: Give the creature any website URL to explore
-3. **Spawn & Explore**: Click the button and watch the creature analyze the website
-4. **Chat**: Ask the creature questions about what it found!
+3. **Select Mode**: Choose how the creature should express itself (Plain, Poem, Song, Dialogue)
+4. **Set Mood** (optional): Give the creature a mood like "wizard", "playful", or "mystical"
+5. **Spawn & Explore**: Click the button and watch the creature analyze the website
+6. **Add Memories**: Use the memory input to give the creature new experiences
+
+### 🔌 MCP (Model Context Protocol) Integration
+
+The zoo is now a **standards-compliant MCP server**! Connect programmatically using any MCP client:
+
+#### Available Tools
+
+- **`fetch_url`** - Fetches and extracts content from any URL
+- **`explain_url`** - AI creature explains a website with optional mode and mood
+- **`memory_add`** - Add a memory to a creature's memory bank
+- **`memory_list`** - Retrieve all memories for a creature
+
+#### Connecting with MCP Clients
+
+**MCP Inspector** (Local Testing)
+```bash
+npm install -g @modelcontextprotocol/inspector
+mcp-inspector http://localhost:8787/mcp
+```
+
+**Claude Desktop** (Add to `claude_desktop_config.json`)
+```json
+{
+  "mcpServers": {
+    "world-wild-web-zoo": {
+      "url": "https://your-worker.workers.dev/mcp"
+    }
+  }
+}
+```
+
+**Claude Code / VS Code**
+Add the MCP server endpoint in your IDE's MCP settings.
+
+#### Example MCP Request
+
+```bash
+curl -X POST http://localhost:8787/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "params": {
+      "name": "explain_url",
+      "arguments": {
+        "url": "https://github.com",
+        "mode": "song",
+        "mood": "playful"
+      }
+    },
+    "id": 1
+  }'
+```
 
 ## 🏗️ Architecture
 
 - **Frontend**: Vanilla JavaScript with a colorful, gradient-heavy UI
-- **Backend**: Cloudflare Workers with Workers AI
+- **Backend**: Cloudflare Workers with TypeScript and itty-router
+- **AI**: Workers AI using Meta's Llama 3.1 8B Instruct
 - **Storage**: Workers KV for creature state and conversation history
-- **AI Model**: Meta's Llama 3.1 8B Instruct (via Workers AI)
+- **MCP Server**: mcp-lite for standards-compliant Model Context Protocol support
+- **Validation**: Zod for schema validation and type safety
 
 ## 🎨 Customization
 
-Want to add your own creature? Edit `src/index.js` and add a new personality to the `CREATURE_PERSONALITIES` array:
+Want to add your own creature? Edit `src/agent.ts` and add a new personality to the `CREATURE_PERSONALITIES` array:
 
-```javascript
+```typescript
 {
   name: 'Your Creature Name',
   emoji: '🦄',
@@ -115,11 +181,24 @@ Want to add your own creature? Edit `src/index.js` and add a new personality to 
 
 MIT - Feel free to create your own zoo!
 
+## 🎓 What We Learned
+
+Building an MCP server on Cloudflare Workers taught us:
+
+- **mcp-lite on Workers**: Successfully deployed a standards-compliant MCP server on Cloudflare's edge
+- **KV as Memory**: Workers KV provides perfect 24-hour creature memories across the globe
+- **Prompt Engineering**: Different modes (poem, song, dialogue) require careful prompt crafting
+- **Edge Fetch Caveats**: Not all websites are accessible from Workers; some block or limit edge requests
+- **Type Safety**: TypeScript + Zod schemas ensure robust tool definitions and validation
+- **Modular Design**: Separating concerns (agent, fetch, MCP) makes the codebase maintainable
+
 ## 🙏 Acknowledgments
 
 - Built with [Cloudflare Workers](https://workers.cloudflare.com/)
 - Powered by [Workers AI](https://developers.cloudflare.com/workers-ai/)
+- MCP integration via [mcp-lite](https://github.com/fiberplane/mcp-lite)
 - Inspired by the weird and wonderful corners of the internet
+- Part of the [World Wild Web AI + MCP Hack Night](https://github.com/Nlea/World-Wild-Web-AI-And-MCP-Hack-Night)
 
 ## 🌟 Contributing
 
