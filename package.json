@@ -4,18 +4,27 @@
   "description": "An AI-powered zoo living on Cloudflare Workers — each creature reads the web, explains it, and sings its story",
   "main": "src/index.js",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --local",
     "deploy": "wrangler deploy",
-    "test": "echo \"No tests yet - creatures are untamed!\""
+    "test": "vitest run",
+    "fmt": "prettier -w ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251014.0",
+    "@types/node": "^24.9.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.2",
     "wrangler": "^4.45.0"
   },
   "dependencies": {
     "@cloudflare/ai": "^1.2.2",
-    "mcp-framework": "^0.2.15"
+    "itty-router": "^5.0.22",
+    "marked": "^16.4.1",
+    "mcp-framework": "^0.2.15",
+    "mcp-lite": "^0.9.0",
+    "zod": "^4.1.12"
   }
 }
