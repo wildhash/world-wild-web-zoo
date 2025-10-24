@@ -118,7 +118,18 @@ export async function runExplain(
       temperature: 0.8
     });
     
-    const responseText = response.response || 'I seem to have lost my voice! Please try again.';
+    console.log('AI Response:', response);
+    
+    if (!response || !response.response) {
+      console.error('Empty or invalid AI response:', response);
+      return {
+        summary: 'The creature is pondering deeply but needs a moment. Please try again!',
+        buildSteps: [],
+        expression: undefined
+      };
+    }
+    
+    const responseText = response.response;
     
     // Parse response to extract sections
     const lines = responseText.split('\n');
@@ -144,8 +155,11 @@ export async function runExplain(
     };
   } catch (error) {
     console.error('AI generation error:', error);
+    console.error('Error details:', JSON.stringify(error, null, 2));
+    
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
-      summary: 'I\'m having trouble finding the right words. Please try again?',
+      summary: `🔧 Technical difficulties: ${errorMessage}. The creature needs a moment to recalibrate.`,
       buildSteps: [],
       expression: undefined
     };

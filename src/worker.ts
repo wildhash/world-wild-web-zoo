@@ -647,7 +647,7 @@ function getHtmlInterface(): string {
         
         <div class="form-group">
           <label for="url">Target URL</label>
-          <input type="url" id="url" placeholder="https://example.com" required />
+          <input type="url" id="url" placeholder="example.com or github.com" required />
         </div>
         
         <div class="form-group">
@@ -733,7 +733,7 @@ function getHtmlInterface(): string {
     selectCreature(0);
     
     async function spawnCreature() {
-      const urlInput = document.getElementById('url').value.trim();
+      let urlInput = document.getElementById('url').value.trim();
       const mode = document.getElementById('mode').value;
       const mood = document.getElementById('mood').value;
       
@@ -742,11 +742,13 @@ function getHtmlInterface(): string {
         return;
       }
       
-      // Basic URL validation
+      // Auto-add https:// if no protocol specified
       if (!urlInput.startsWith('http://') && !urlInput.startsWith('https://')) {
-        alert('Please enter a valid URL starting with http:// or https://');
-        return;
+        urlInput = 'https://' + urlInput;
       }
+      
+      // Remove www. if present (it's usually redundant)
+      urlInput = urlInput.replace(/^(https?:\/\/)www\./, '$1');
       
       const responseArea = document.getElementById('responseArea');
       const creatureResponse = document.getElementById('creatureResponse');
