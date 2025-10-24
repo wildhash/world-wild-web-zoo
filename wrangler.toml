@@ -1,0 +1,17 @@
+name = "world-wild-web-zoo"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Workers AI binding
+[ai]
+binding = "AI"
+
+# KV namespace for storing creature data
+[[kv_namespaces]]
+binding = "CREATURE_KV"
+id = "placeholder_will_be_created_on_deploy"
+preview_id = "placeholder_preview_id"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "development"
