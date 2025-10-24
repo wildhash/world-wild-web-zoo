@@ -475,8 +475,9 @@ async function handleExplain(request: Request, env: Env): Promise<Response> {
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('Explain error:', error);
     return new Response(JSON.stringify({
-      error: error instanceof Error ? error.message : String(error)
+      error: 'Failed to explain URL'
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
@@ -544,8 +545,9 @@ async function handleSpawn(request: Request, env: Env): Promise<Response> {
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('Spawn error:', error);
     return new Response(JSON.stringify({
-      error: error instanceof Error ? error.message : String(error)
+      error: 'Failed to spawn creature'
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
@@ -592,8 +594,9 @@ async function handleMemory(request: Request, env: Env): Promise<Response> {
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('Memory add error:', error);
     return new Response(JSON.stringify({
-      error: error instanceof Error ? error.message : String(error)
+      error: 'Failed to add memory'
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
@@ -621,8 +624,9 @@ async function handleGetCreature(request: Request, env: Env): Promise<Response> 
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('Get creature error:', error);
     return new Response(JSON.stringify({
-      error: error instanceof Error ? error.message : String(error)
+      error: 'Failed to retrieve creature'
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

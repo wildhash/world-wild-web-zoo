@@ -285,11 +285,13 @@ export async function handleMcpRequest(request: Request, env: Env): Promise<Resp
     
     return await httpHandler(request);
   } catch (error) {
+    // Log error for debugging but return generic message
+    console.error('MCP request error:', error);
     return new Response(JSON.stringify({
       jsonrpc: '2.0',
       error: {
         code: -32603,
-        message: error instanceof Error ? error.message : String(error)
+        message: 'Internal server error'
       },
       id: null
     }), {
