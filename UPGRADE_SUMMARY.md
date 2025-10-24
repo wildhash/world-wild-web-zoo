@@ -30,9 +30,12 @@ Root:
 - `package.json` - Added dependencies and updated scripts
 - `README.md` - Added MCP documentation
 
-### Preserved Files
-- `src/index.js` - Kept as reference (not used)
-- All documentation files (ARCHITECTURE.md, CONTRIBUTING.md, etc.)
+### Removed Files
+- `src/index.js` - Removed in favor of TypeScript implementation
+- `mcp-framework` dependency - Replaced with mcp-lite per hackathon requirements
+
+### Documentation Updates
+- All documentation files updated to reference TypeScript structure
 
 ## 🔑 Key Features
 
