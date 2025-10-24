@@ -84,7 +84,7 @@ If you find a bug, please:
 
 ## Adding a New Creature - Step by Step
 
-1. Open `src/index.js`
+1. Open `src/agent.ts`
 2. Find the `CREATURE_PERSONALITIES` array
 3. Add your new creature object
 4. Test it locally

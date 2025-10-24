@@ -130,7 +130,7 @@ For a small-to-medium traffic site, the free tier is more than sufficient!
 ## Maintenance
 
 ### Update Creatures
-Edit `src/index.js` → `CREATURE_PERSONALITIES` array, then redeploy.
+Edit `src/agent.ts` → `CREATURE_PERSONALITIES` array, then redeploy.
 
 ### Monitor Storage
 Creatures expire after 24 hours automatically (TTL in KV).
