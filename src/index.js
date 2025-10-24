@@ -67,11 +67,33 @@ async function fetchUrlContent(url) {
     
     const html = await response.text();
     
-    // Simple text extraction - remove HTML tags and get first 3000 chars
-    const text = html
-      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-      .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
-      .replace(/<[^>]+>/g, ' ')
+    // Extract text content for AI analysis only (never rendered as HTML)
+    // Use a multi-pass approach to safely strip all markup
+    let text = html;
+    
+    // Remove potentially dangerous content blocks
+    // Using a greedy approach that handles malformed tags
+    text = text.replace(/<script[^>]*>[\s\S]*?<\/script[^>]*>/gi, ' ');
+    text = text.replace(/<style[^>]*>[\s\S]*?<\/style[^>]*>/gi, ' ');
+    
+    // Remove all HTML tags using iterative approach to prevent bypass
+    let previousLength = 0;
+    const maxIterations = 10; // Safety limit
+    let iterations = 0;
+    while (text.length !== previousLength && text.includes('<') && iterations < maxIterations) {
+      previousLength = text.length;
+      text = text.replace(/<[^>]*>/g, ' ');
+      iterations++;
+    }
+    
+    // Decode common HTML entities in correct order (& last to avoid double-decoding)
+    text = text
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, '&')  // Process & last to prevent double-decoding
       .replace(/\s+/g, ' ')
       .trim()
       .substring(0, 3000);
