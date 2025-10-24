@@ -3,13 +3,10 @@
  * Cloudflare Worker with MCP server integration
  */
 
-import { Router } from 'itty-router';
 import { fetchPage } from './fetchPage';
 import { runExplain, generateChatResponse, CREATURE_PERSONALITIES } from './agent';
 import { handleMcpRequest } from './mcp';
 import { Env, Creature, CreaturePersonality } from './types';
-
-const router = Router();
 
 /**
  * Helper to generate creature ID
@@ -405,20 +402,10 @@ function getHtmlInterface(): string {
 </html>`;
 }
 
-// Routes
-router.get('/', () => {
-  return new Response(getHtmlInterface(), {
-    headers: { 'Content-Type': 'text/html' }
-  });
-});
-
-router.get('/health', () => {
-  return new Response(JSON.stringify({ status: 'ok', timestamp: Date.now() }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
-});
-
-router.post('/explain', async (request, env: Env) => {
+/**
+ * Handle /explain endpoint
+ */
+async function handleExplain(request: Request, env: Env): Promise<Response> {
   try {
     const { url, mode, creatureId, mood } = await request.json() as any;
     
@@ -495,9 +482,12 @@ router.post('/explain', async (request, env: Env) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-});
+}
 
-router.post('/api/spawn', async (request, env: Env) => {
+/**
+ * Handle /api/spawn endpoint
+ */
+async function handleSpawn(request: Request, env: Env): Promise<Response> {
   try {
     const { url, creatureName, mode, mood } = await request.json() as any;
     
@@ -561,9 +551,12 @@ router.post('/api/spawn', async (request, env: Env) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-});
+}
 
-router.post('/api/memory', async (request, env: Env) => {
+/**
+ * Handle /api/memory endpoint
+ */
+async function handleMemory(request: Request, env: Env): Promise<Response> {
   try {
     const { creatureId, memory } = await request.json() as any;
     
@@ -606,9 +599,12 @@ router.post('/api/memory', async (request, env: Env) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-});
+}
 
-router.get('/creature/:id', async (request, env: Env) => {
+/**
+ * Handle /creature/:id endpoint
+ */
+async function handleGetCreature(request: Request, env: Env): Promise<Response> {
   try {
     const url = new URL(request.url);
     const id = url.pathname.split('/')[2];
@@ -632,19 +628,55 @@ router.get('/creature/:id', async (request, env: Env) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-});
-
-router.post('/mcp', async (request, env: Env) => {
-  return handleMcpRequest(request, env);
-});
-
-router.all('*', () => {
-  return new Response('Not Found', { status: 404 });
-});
+}
 
 // Main worker export
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    return router.handle(request, env, ctx);
+    const url = new URL(request.url);
+    const path = url.pathname;
+    const method = request.method;
+    
+    // Route: GET /
+    if (path === '/' && method === 'GET') {
+      return new Response(getHtmlInterface(), {
+        headers: { 'Content-Type': 'text/html' }
+      });
+    }
+    
+    // Route: GET /health
+    if (path === '/health' && method === 'GET') {
+      return new Response(JSON.stringify({ status: 'ok', timestamp: Date.now() }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    // Route: POST /explain
+    if (path === '/explain' && method === 'POST') {
+      return handleExplain(request, env);
+    }
+    
+    // Route: POST /api/spawn
+    if (path === '/api/spawn' && method === 'POST') {
+      return handleSpawn(request, env);
+    }
+    
+    // Route: POST /api/memory
+    if (path === '/api/memory' && method === 'POST') {
+      return handleMemory(request, env);
+    }
+    
+    // Route: GET /creature/:id
+    if (path.startsWith('/creature/') && method === 'GET') {
+      return handleGetCreature(request, env);
+    }
+    
+    // Route: POST /mcp
+    if (path === '/mcp' && method === 'POST') {
+      return handleMcpRequest(request, env);
+    }
+    
+    // 404 for other paths
+    return new Response('Not Found', { status: 404 });
   }
 };
